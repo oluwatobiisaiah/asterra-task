@@ -1,0 +1,36 @@
+version: 1
+applications:
+  - frontend:
+      phases:
+        preBuild:
+          commands:
+            - cd web/apps/frontend
+            - pnpm install
+        build:
+          commands:
+            - cd web/apps/frontend
+            - pnpm build
+      artifacts:
+        baseDirectory: web/apps/frontend/dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - web/apps/frontend/node_modules/**/*
+    backend:
+      phases:
+        preBuild:
+          commands:
+            - cd web/apps/backend
+            - pnpm install
+        build:
+          commands:
+            - cd web/apps/backend
+            - pnpm build
+      artifacts:
+        baseDirectory: web/apps/backend/dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - web/apps/backend/node_modules/**/*
