@@ -3,7 +3,6 @@ import { db } from '../db';
 import { users, hobbies, type User, type NewUser, type Hobby, type NewHobby } from '../db/schema';
 
 export class DatabaseService {
-  // User operations
   async createUser(data: NewUser): Promise<User> {
     const [user] = await db.insert(users).values(data).returning();
     return user;
@@ -39,6 +38,11 @@ export class DatabaseService {
 
   async getUserById(id: number): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async getUserByPhone(phone: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.phone, phone));
     return user;
   }
 

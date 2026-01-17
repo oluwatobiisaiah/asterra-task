@@ -7,8 +7,11 @@ import {
   hobbyIdSchema,
   paginationSchema,
 } from '../lib/validators';
+import SuperJSON from 'superjson';
 
-const t = initTRPC.create();
+const t = initTRPC.create({
+  transformer: SuperJSON
+});
 
 export const router = t.router;
 export const publicProcedure = t.procedure;
@@ -16,9 +19,16 @@ export const publicProcedure = t.procedure;
 export const appRouter = router({
   user: router({
     create: publicProcedure.input(createUserSchema).mutation(async ({ input }) => {
+      const existingUser = await dbService.getUserByPhone(input.phone);
+      if (existingUser) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'A user with this phone number already exists',
+        });
+      }
       try {
         return await dbService.createUser(input);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error creating user:', error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

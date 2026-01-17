@@ -9,6 +9,7 @@ import { Card, CardHeader, CardBody } from './ui/Card';
 
 export default function AddUserForm() {
   const [showSuccess, setShowSuccess] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
   const utils = trpc.useUtils();
 
   const {
@@ -24,8 +25,12 @@ export default function AddUserForm() {
     onSuccess: () => {
       reset();
       setShowSuccess(true);
+      setServerError(null);
       utils.user.getAll.invalidate();
       utils.data.getUsersWithHobbies.invalidate();
+    },
+    onError: (error) => {
+      setServerError(error.message);
     },
   });
 
@@ -61,6 +66,15 @@ export default function AddUserForm() {
         <CardBody>
           {showSuccess && (
             <SuccessMessage message="User created successfully!" className="mb-6" />
+          )}
+
+          {serverError && (
+            <div className="mb-6 p-4 bg-danger-50 border border-danger-200 rounded-lg">
+              <p className="text-sm text-danger-600 font-medium flex items-center gap-1.5">
+                <span className="inline-block w-1.5 h-1.5 bg-danger-600 rounded-full" />
+                {serverError}
+              </p>
+            </div>
           )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
