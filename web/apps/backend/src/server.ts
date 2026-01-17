@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Health check
 app.get('/health', (_, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ status: 'ok', timestamp: new Date().toISOString(), data:{frontend_url: process.env.FRONTEND_URL,node_env: process.env.NODE_ENV} });
 });
 
 // tRPC middleware
