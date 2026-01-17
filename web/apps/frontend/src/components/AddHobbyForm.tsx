@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 import SuccessMessage from './ui/SuccessMessage';
 import { Card, CardHeader, CardBody } from './ui/Card';
 import { CardSkeleton } from './ui/SkeletonLoader';
-import EmptyState from './table/EmptyState';
+import EmptyState from './table/EmptyState'; 
 
 export default function AddHobbyForm() {
    const [showSuccess, setShowSuccess] = useState(false);
