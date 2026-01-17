@@ -12,14 +12,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Security middleware
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
 
-// CORS configuration
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:5173',
@@ -27,7 +25,6 @@ app.use(
   })
 );
 
-// Compression middleware
 app.use(compression());
 
 // Body parsing
@@ -71,9 +68,9 @@ const startServer = async () => {
     }
 
     app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
-      console.log(`📡 tRPC endpoint: http://localhost:${PORT}/trpc`);
-      console.log(`🏥 Health check: http://localhost:${PORT}/health`);
+      console.log(`Server running on http://localhost:${PORT}`);
+      console.log(`tRPC endpoint: http://localhost:${PORT}/trpc`);
+      console.log(`Health check: http://localhost:${PORT}/health`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);
