@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "ESNext",
+        "module": "nodenext",
         "target": "ES2022",
         "lib": [
             "ES2022"
@@ -11,6 +11,7 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "nodenext",
         "isolatedModules": true,
         "declaration": true,
         "declarationMap": true,

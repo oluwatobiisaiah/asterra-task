@@ -1,4 +1,4 @@
-# AsterrA Task Project Documentation
+# Asterra Task Project Documentation
 
 This project consists of two main sections: a Python data processing suite and a full-stack web application for user and hobby management.
 
