@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch --clear-screen=false src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "tsx src/server.ts",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
