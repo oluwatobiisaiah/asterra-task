@@ -104,7 +104,11 @@ jobs:
                     \"DB_USER\": \"${{ secrets.DB_USER }}\",
                     \"DB_PASSWORD\": \"${{ secrets.DB_PASSWORD }}\",
                     \"DB_SCHEMA\": \"${{ secrets.DB_SCHEMA }}\",
-                    \"FRONTEND_URL\": \"${{ secrets.FRONTEND_URL }}\"
+                    \"FRONTEND_URL\": \"${{ secrets.FRONTEND_URL }}\",
+                    \"STRICT_RATE_LIMIT\": \"20\",
+                    \"NORMAL_RATE_LIMIT\": \"60\",
+                    \"LENIENT_RATE_LIMIT\": \"100\",
+                    \"CACHE_TTL\": \"3600\"
                   }
                 }
               },
