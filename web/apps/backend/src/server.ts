@@ -66,9 +66,9 @@ app.get('/health', (_, res) => {
   });
 });
 
-app.get('/stats/rate-limit', (req, res) => {
+app.get('/stats/rate-limit', (_, res) => {
   if (process.env.NODE_ENV === 'production') {
-    return res.status(404).json({ error: 'Not found' });
+     res.status(404).json({ error: 'Not found' });
   }
   res.json(getRateLimitStats());
 });
