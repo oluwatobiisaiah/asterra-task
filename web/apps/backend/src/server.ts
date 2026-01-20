@@ -54,7 +54,7 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/health', (_, res) => {
+app.get('/app-health', (_, res) => {
   res.json({ 
     status: 'ok', 
     timestamp: new Date().toISOString(),
@@ -103,7 +103,7 @@ const startServer = async () => {
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
       console.log(`tRPC endpoint: http://localhost:${PORT}/trpc`);
-      console.log(`Health check: http://localhost:${PORT}/health`);
+      console.log(`Health check: http://localhost:${PORT}/app-health`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);
