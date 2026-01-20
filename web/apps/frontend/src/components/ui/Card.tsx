@@ -39,5 +39,4 @@ export function CardBody({ children, className = '' }: CardBodyProps) {
   );
 }
 
-// Default export for backward compatibility
 export default Card;

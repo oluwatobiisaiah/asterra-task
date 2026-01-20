@@ -201,21 +201,6 @@ jspm_packages/
 .cache
 .parcel-cache
 
-# Next.js build output
-.next
-
-# Nuxt.js build / generate output
-.nuxt
-dist
-
-# Gatsby files
-.cache/
-public
-
-# Storybook build outputs
-.out
-.storybook-out
-
 # Temporary folders
 tmp/
 temp/
@@ -240,20 +225,6 @@ temp/
 ehthumbs.db
 Thumbs.db
 
-# Common artifacts
-*.tmp
-*.temp
-*.bak
-*.swp
-*.swo
-*~
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# Lock files (keep pnpm-lock.yaml if using pnpm)
 package-lock.json
 yarn.lock
 

@@ -1,7 +1,6 @@
 import { pgTable, serial, varchar, text, timestamp, integer, index } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-// Users table
 export const users = pgTable(
   'users',
   {
@@ -18,7 +17,6 @@ export const users = pgTable(
   })
 );
 
-// Hobbies table
 export const hobbies = pgTable(
   'hobbies',
   {
@@ -34,7 +32,7 @@ export const hobbies = pgTable(
   })
 );
 
-// Relations
+
 export const usersRelations = relations(users, ({ many }) => ({
   hobbies: many(hobbies),
 }));
@@ -46,7 +44,7 @@ export const hobbiesRelations = relations(hobbies, ({ one }) => ({
   }),
 }));
 
-// Types
+
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type Hobby = typeof hobbies.$inferSelect;

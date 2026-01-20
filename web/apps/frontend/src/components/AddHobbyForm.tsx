@@ -61,6 +61,12 @@ export default function AddHobbyForm() {
     });
   };
 
+  const selectedUserId = watch('userId');
+  const selectedUser = users?.find(u => u.id === Number(selectedUserId));
+  const filteredUsers = users?.filter(user =>
+    `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+  ) || [];
+
   if (usersLoading) {
     return <CardSkeleton />;
   }
@@ -100,7 +106,8 @@ export default function AddHobbyForm() {
           )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            {/* User Selection */}
+
+            {/* User Selection Section*/}
             <div className="group">
               <label htmlFor="userId" className="label">
                 <div className="flex items-center gap-2">
@@ -113,11 +120,8 @@ export default function AddHobbyForm() {
                   className={`input-base cursor-pointer flex items-center justify-between ${errors.userId ? 'input-error' : ''}`}
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <span className={watch('userId') ? 'text-gray-900' : 'text-gray-400'}>
-                    {watch('userId')
-                      ? users?.find(u => u.id === Number(watch('userId')))?.firstName + ' ' + users?.find(u => u.id === Number(watch('userId')))?.lastName
-                      : 'Search and select a user'
-                    }
+                  <span className={selectedUserId ? 'text-gray-900' : 'text-gray-400'}>
+                    {selectedUser ? `${selectedUser.firstName} ${selectedUser.lastName}` : 'Search and select a user'}
                   </span>
                   <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                 </div>
@@ -134,31 +138,25 @@ export default function AddHobbyForm() {
                       />
                     </div>
                     <div className="py-1">
-                      {users
-                        ?.filter(user =>
-                          `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
-                        )
-                        .map((user) => (
-                          <div
-                            key={user.id}
-                            className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                            onClick={() => {
-                              setValue('userId', user.id.toString());
-                              setIsDropdownOpen(false);
-                              setSearchTerm('');
-                            }}
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold text-xs">
-                                {user.firstName[0]}{user.lastName[0]}
-                              </div>
-                              <span className="text-gray-900">{user.firstName} {user.lastName}</span>
+                      {filteredUsers.map((user) => (
+                        <div
+                          key={user.id}
+                          className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                          onClick={() => {
+                            setValue('userId', user.id.toString());
+                            setIsDropdownOpen(false);
+                            setSearchTerm('');
+                          }}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold text-xs">
+                              {user.firstName[0]}{user.lastName[0]}
                             </div>
+                            <span className="text-gray-900">{user.firstName} {user.lastName}</span>
                           </div>
-                        ))}
-                      {users?.filter(user =>
-                        `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
-                      ).length === 0 && (
+                        </div>
+                      ))}
+                      {filteredUsers.length === 0 && (
                         <div className="px-3 py-2 text-sm text-gray-500">No users found</div>
                       )}
                     </div>
@@ -173,7 +171,6 @@ export default function AddHobbyForm() {
               )}
             </div>
 
-            {/* Hobby Input */}
             <div className="group">
               <label htmlFor="hobby" className="label">
                 <div className="flex items-center gap-2">
@@ -199,7 +196,6 @@ export default function AddHobbyForm() {
               </p>
             </div>
 
-            {/* Submit Button */}
             <div className="flex items-center gap-4 pt-6 border-t border-slate-100">
               <button type="submit" disabled={createHobby.isPending} className="btn btn-primary flex-1">
                 {createHobby.isPending ? (

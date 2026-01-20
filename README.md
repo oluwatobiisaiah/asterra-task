@@ -13,33 +13,27 @@ The project demonstrates skills in data analysis, image processing, and modern w
 **Purpose:** Processes student grades from multiple sources and computes final grades with weighted averages.
 
 **Implementation Details:**
-- **Libraries:** Pandas for data manipulation, JSON for student data parsing.
+- **Libraries:** Pandas for data manipulation, JSON for student data parsing, logging for comprehensive tracking.
+- **Architecture:** Object-oriented design with `GradeConfig`, `DataValidator`, and `GradeProcessor` classes for modularity and maintainability.
+- **Features:** Data validation, memory optimization, comprehensive logging, duplicate detection, range validation, and statistical summaries.
 - **Data Sources:** CSV files for homework/exams and quizzes, JSON for student information.
-- **Thought Process:** 
-  - Normalize student IDs to lowercase for consistent merging.
-  - Handle missing data with `errors='coerce'` in numeric conversions.
-  - Compute averages for homework and quizzes.
-  - Apply grading weights: 10% homework, 25% quizzes, 65% exam.
-  - Output organized by student groups in Excel format.
+- **Process:** Load and validate data, normalize IDs, merge datasets efficiently, calculate weighted final grades, export to Excel by groups.
 - **How to Run:** `python solution.py` (requires assets in `assets/` folder).
 
-**Output:** `final_grades.xlsx` with sheets per group, sorted by final grade.
+**Output:** `final_grades.xlsx` with sheets per group sorted by final grade, plus detailed processing logs and statistics.
 
 ### Raster Manipulation (`python-section/raster-manipulation/`)
 
 **Purpose:** Simulates remote sensing data processing with logarithmic transformation and conditional scaling.
 
 **Implementation Details:**
-- **Libraries:** NumPy for array operations, Matplotlib for visualization.
-- **Process:**
-  - Generate synthetic 16-bit raster data (1000x10000).
-  - Apply log10 transformation (scaled by 10) for values > 0.
-  - Double values below 13 dB threshold.
-  - Normalize to 0-255 for grayscale image display.
-- **Thought Process:** Mimics SAR (Synthetic Aperture Radar) processing where log scaling enhances dynamic range, and thresholding highlights low-intensity features. Reproducibility ensured with fixed seed.
+- **Libraries:** NumPy for array operations, Matplotlib for visualization, JSON for metadata storage.
+- **Architecture:** Object-oriented design with `ProcessingConfig` and `ImageProcessor` classes for configuration and processing pipeline.
+- **Features:** Memory usage estimation, comprehensive logging, metadata tracking, in-place operations for efficiency, scientific visualization with colorbars.
+- **Process:** Generate synthetic 16-bit raster data, apply log10 transformation, conditional scaling below threshold, normalize to 0-255, create visualization with metadata.
 - **How to Run:** `python solution.py`.
 
-**Output:** `processed_log_image.png` - grayscale visualization of processed data.
+**Output:** `processed_log_image.png` - grayscale visualization, plus `processed_log_image.json` with processing metadata and statistics.
 
 ## Web Section
 
@@ -64,6 +58,7 @@ A monorepo full-stack application using modern TypeScript ecosystem for managing
 - Paginated data display
 - Real-time UI updates via TanStack Query
 - Responsive design with Tailwind
+- API rate limiting with configurable limits for different operation types (queries, mutations)
 
 ### CI/CD Pipeline (GitHub Actions)
 
@@ -94,7 +89,7 @@ A monorepo full-stack application using modern TypeScript ecosystem for managing
    pnpm install
    ```
 
-3. **Database:** Configure PostgreSQL (local or AWS RDS), update `apps/backend/.env`.
+3. **Database and Environment:** Configure PostgreSQL (local or AWS RDS) and rate limiting settings in `apps/backend/.env`. Refer to `.env.example` for required variables including `STRICT_RATE_LIMIT`, `NORMAL_RATE_LIMIT`, and `LENIENT_RATE_LIMIT` for API rate limiting.
 
 4. **Migrate Schema:**
    ```bash

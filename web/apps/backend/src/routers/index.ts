@@ -8,17 +8,37 @@ import {
   paginationSchema,
 } from '../lib/validators';
 import SuperJSON from 'superjson';
+import { rateLimiters } from '../middleware/rateLimiter';
 
-const t = initTRPC.create({
+type Context = {
+  ip: string;
+};
+
+const t = initTRPC.context<Context>().create({
   transformer: SuperJSON
 });
 
 export const router = t.router;
 export const publicProcedure = t.procedure;
 
+const strictProcedure = publicProcedure.use(async ({ ctx, next }) => {
+  rateLimiters.strict(ctx.ip); 
+  return next();
+});
+
+const normalProcedure = publicProcedure.use(async ({ ctx, next }) => {
+  rateLimiters.normal(ctx.ip); 
+  return next();
+});
+
+const lenientProcedure = publicProcedure.use(async ({ ctx, next }) => {
+  rateLimiters.lenient(ctx.ip);
+  return next();
+});
+
 export const appRouter = router({
   user: router({
-    create: publicProcedure.input(createUserSchema).mutation(async ({ input }) => {
+    create: strictProcedure.input(createUserSchema).mutation(async ({ input }) => {
       const existingUser = await dbService.getUserByPhone(input.phone);
       if (existingUser) {
         throw new TRPCError({
@@ -37,7 +57,7 @@ export const appRouter = router({
       }
     }),
 
-    getAll: publicProcedure.query(async () => {
+    getAll: lenientProcedure.query(async () => {
       try {
         return await dbService.getAllUsers();
       } catch (error) {
@@ -49,7 +69,7 @@ export const appRouter = router({
       }
     }),
 
-    getById: publicProcedure.input(userIdSchema).query(async ({ input }) => {
+    getById: lenientProcedure.input(userIdSchema).query(async ({ input }) => {
       try {
         const user = await dbService.getUserById(input.id);
         if (!user) {
@@ -69,7 +89,7 @@ export const appRouter = router({
       }
     }),
 
-    delete: publicProcedure.input(userIdSchema).mutation(async ({ input }) => {
+    delete: strictProcedure.input(userIdSchema).mutation(async ({ input }) => {
       try {
         const deleted = await dbService.deleteUser(input.id);
         if (!deleted) {
@@ -91,7 +111,7 @@ export const appRouter = router({
   }),
 
   hobby: router({
-    create: publicProcedure.input(createHobbySchema).mutation(async ({ input }) => {
+    create: strictProcedure.input(createHobbySchema).mutation(async ({ input }) => {
       try {
         const user = await dbService.getUserById(input.userId);
         if (!user) {
@@ -111,7 +131,7 @@ export const appRouter = router({
       }
     }),
 
-    getByUserId: publicProcedure.input(userIdSchema).query(async ({ input }) => {
+    getByUserId: lenientProcedure.input(userIdSchema).query(async ({ input }) => {
       try {
         return await dbService.getHobbiesByUserId(input.id);
       } catch (error) {
@@ -123,7 +143,7 @@ export const appRouter = router({
       }
     }),
 
-    delete: publicProcedure.input(hobbyIdSchema).mutation(async ({ input }) => {
+    delete: strictProcedure.input(hobbyIdSchema).mutation(async ({ input }) => {
       try {
         const deleted = await dbService.deleteHobby(input.id);
         if (!deleted) {
@@ -145,7 +165,7 @@ export const appRouter = router({
   }),
 
   data: router({
-    getUsersWithHobbies: publicProcedure
+    getUsersWithHobbies: normalProcedure
       .input(paginationSchema.optional())
       .query(async ({ input }) => {
         try {

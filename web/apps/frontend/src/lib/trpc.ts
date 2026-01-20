@@ -6,11 +6,10 @@ import SuperJSON from 'superjson';
 export const trpc = createTRPCReact<AppRouter>();
 
 const getBaseUrl = () => {
-    // Use environment variable in production
     if (import.meta.env.VITE_API_URL) {
         return import.meta.env.VITE_API_URL;
     }
-    return 'http://localhost:4000';
+    return 'http://localhost:4000'; // fallback url incase there is no impo
 };
 
 export const trpcClient = trpc.createClient({

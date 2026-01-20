@@ -6,10 +6,11 @@ import EmptyState from '../components/table/EmptyState';
 import Pagination from '../components/table/Pagination';
 import UserTableRow from '../components/table/UserTableRow';
 import { Card } from '../components/ui/Card';
+import ConfirmationModal from '../components/ui/ConfirmationModal';
 
 export default function UsersTable() {
   const { data: response, isLoading, error, page, setPage, limit } = useUsersData();
-  const { deletingUserId, deletingHobbyId, handleDeleteUser, handleDeleteHobby } = useMutations();
+  const { deletingUserId, deletingHobbyId, handleDeleteUser, handleDeleteHobby, confirmation, cancelConfirmation } = useMutations();
 
   if (isLoading) {
     return <TableSkeleton />;
@@ -88,6 +89,13 @@ export default function UsersTable() {
       </Card>
 
       {pagination && <Pagination pagination={pagination} onPageChange={setPage} />}
+
+      <ConfirmationModal
+        isOpen={confirmation?.isOpen || false}
+        message={confirmation?.message || ''}
+        onConfirm={confirmation?.onConfirm || (() => {})}
+        onCancel={cancelConfirmation}
+      />
     </div>
   );
 }

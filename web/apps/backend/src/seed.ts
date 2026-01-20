@@ -80,7 +80,6 @@ async function seed() {
 
   console.log(`Inserted ${userIds.length} users`);
 
-  // Now insert hobbies
   const hobbyInserts = [];
   for (const userId of userIds) {
     const numHobbies = Math.floor(Math.random() * 5) + 1; // 1 to 5 hobbies

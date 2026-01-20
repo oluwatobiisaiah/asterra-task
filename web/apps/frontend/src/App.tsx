@@ -15,7 +15,6 @@ function App() {
     <div className="min-h-screen">
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Premium Header */}
         <header className="text-center mb-16">
           <div className="inline-flex items-center justify-center gap-3 mb-6">
             <div className="bg-black p-4 rounded-xl shadow-lg">
@@ -30,7 +29,6 @@ function App() {
           </p>
         </header>
 
-        {/* Tab Navigation */}
         <div className="flex justify-center mb-8 md:mb-12">
           <div className="bg-white rounded-lg md:rounded-xl p-1 md:p-2 shadow border border-gray-200">
             <div className="flex gap-1 md:gap-2">
@@ -74,7 +72,6 @@ function App() {
           </div>
         </div>
 
-        {/* Content with Fade Animation */}
         <main className="animate-fadeIn">
           <Suspense fallback={<CardSkeleton />}>
             {activeTab === 'add-user' && <AddUserForm />}

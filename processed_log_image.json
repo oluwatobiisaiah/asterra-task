@@ -1,0 +1,41 @@
+{
+  "original_stats": {
+    "min": 0,
+    "max": 65535,
+    "mean": 32769.1929395,
+    "median": 32767.0,
+    "zeros": 149,
+    "shape": [
+      1000,
+      10000
+    ]
+  },
+  "log_stats": {
+    "min": 0.0,
+    "max": 48.16473388671875,
+    "mean": 43.822853088378906,
+    "invalid_count": 149
+  },
+  "scaled_stats": {
+    "min": 0.0,
+    "max": 48.16473388671875,
+    "scaled_count": 2875
+  },
+  "normalization": {
+    "min_value": 0.0,
+    "max_value": 48.16473388671875,
+    "output_range": [
+      0,
+      255
+    ]
+  },
+  "timestamp": "2026-01-20T04:41:57.784539",
+  "config": {
+    "width": 10000,
+    "height": 1000,
+    "seed": 42,
+    "log_threshold": 13.0,
+    "log_multiplier": 2.0,
+    "colormap": "gray"
+  }
+}

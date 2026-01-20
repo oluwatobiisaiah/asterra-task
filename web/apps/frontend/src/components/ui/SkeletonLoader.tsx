@@ -13,7 +13,6 @@ export default function SkeletonLoader({ className = '', lines = 1 }: SkeletonLo
   );
 }
 
-// Specific skeleton components for different use cases
 export function TableSkeleton() {
   return (
     <div className="animate-pulse">

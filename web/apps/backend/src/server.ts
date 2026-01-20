@@ -6,6 +6,8 @@ import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import dotenv from 'dotenv';
 import { appRouter } from './routers/index';
 import { testConnection } from './db/index';
+import { createContext } from './lib/context';
+import { getRateLimitStats } from './middleware/rateLimiter';
 
 dotenv.config();
 
@@ -20,9 +22,7 @@ app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
-      
-      // Check if origin is in allowed list
-      if (allowedOrigins.some(allowedOrigin => {
+            if (allowedOrigins.some(allowedOrigin => {
         if (allowedOrigin.includes('*')) {
           const regex = new RegExp(allowedOrigin.replace('*', '.*'));
           return regex.test(origin);
@@ -51,11 +51,9 @@ app.use(
 
 app.use(compression());
 
-// Body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health check
 app.get('/health', (_, res) => {
   res.json({ 
     status: 'ok', 
@@ -68,21 +66,25 @@ app.get('/health', (_, res) => {
   });
 });
 
-// tRPC middleware
+app.get('/stats/rate-limit', (req, res) => {
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  res.json(getRateLimitStats());
+});
+
 app.use(
   '/trpc',
   createExpressMiddleware({
     router: appRouter,
-    createContext: () => ({}),
+    createContext,
   })
 );
 
-// 404 handler
 app.use((_, res) => {
   res.status(404).json({ error: 'Not found' });
 });
 
-// Error handler
 app.use((err: Error, _: express.Request, res: express.Response, __: express.NextFunction) => {
   console.error('Server error:', err);
   res.status(500).json({
@@ -91,7 +93,6 @@ app.use((err: Error, _: express.Request, res: express.Response, __: express.Next
   });
 });
 
-// Start server
 const startServer = async () => {
   try {
     const dbConnected = await testConnection();

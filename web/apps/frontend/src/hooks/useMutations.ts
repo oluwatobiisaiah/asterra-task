@@ -4,6 +4,7 @@ import { trpc } from '../lib/trpc';
 export function useMutations() {
   const [deletingUserId, setDeletingUserId] = useState<number | null>(null);
   const [deletingHobbyId, setDeletingHobbyId] = useState<number | null>(null);
+  const [confirmation, setConfirmation] = useState<{ isOpen: boolean; message: string; onConfirm: () => void } | null>(null);
 
   const utils = trpc.useUtils();
 
@@ -29,21 +30,27 @@ export function useMutations() {
   });
 
   const handleDeleteUser = (userId: number) => {
-    if (
-      window.confirm(
-        'Are you sure you want to delete this user? This will also delete all their hobbies.'
-      )
-    ) {
-      setDeletingUserId(userId);
-      deleteUser.mutate({ id: userId });
-    }
+    setConfirmation({
+      isOpen: true,
+      message: 'Are you sure you want to delete this user? This will also delete all their hobbies.',
+      onConfirm: () => {
+        setDeletingUserId(userId);
+        deleteUser.mutate({ id: userId });
+        setConfirmation(null);
+      },
+    });
   };
 
   const handleDeleteHobby = (hobbyId: number) => {
-    if (window.confirm('Are you sure you want to delete this hobby?')) {
-      setDeletingHobbyId(hobbyId);
-      deleteHobby.mutate({ id: hobbyId });
-    }
+    setConfirmation({
+      isOpen: true,
+      message: 'Are you sure you want to delete this hobby?',
+      onConfirm: () => {
+        setDeletingHobbyId(hobbyId);
+        deleteHobby.mutate({ id: hobbyId });
+        setConfirmation(null);
+      },
+    });
   };
 
   return {
@@ -53,5 +60,7 @@ export function useMutations() {
     handleDeleteHobby,
     isDeletingUser: deleteUser.isPending,
     isDeletingHobby: deleteHobby.isPending,
+    confirmation,
+    cancelConfirmation: () => setConfirmation(null),
   };
 }
